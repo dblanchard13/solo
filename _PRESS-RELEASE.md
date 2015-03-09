@@ -18,27 +18,28 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
-
+HappyTracker
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
-
+For all those interested in the pattern of their happiness. 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-
+HappyTracker is a diary for you feelings. You tell it how you're feeling everyday with notes of your day's activities, and it keeps track.
 ## Problem ##
   > Describe the problem your product solves.
-
+HappyTracker highlights the things that make you happy or sad. This allows you to make better decisions for your present happiness.
 ## Solution ##
   > Describe how your product elegantly solves the problem.
-
+HappyTracker doesn't judge your decisions, it simply presents them back, allowing you to choose the solution you want. 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
-
+'HappyTracker is here to revolutionize the world's emotional decision making'
 ## How to Get Started ##
   > Describe how easy it is to get started.
-
+Simply create an account and start tracking your happiness, one day at a time.
 ## Customer Quote ##
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
-
+'Before HappyTracker, I was spiraling into the depths of depression and drug-abuse, but after seeing how each decision I made affected my longterm happiness, I've begun to make the decisions that will make me happy now and in the future!''
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+Are you ready to change your life for the better? Just head on over to HappyTracker.com to sign up!
