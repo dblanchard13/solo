@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Solo MVP</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src='happyDay.js'></script>
+  </head>
+<body ng-app='happyDay' ng-controller='dayCtrl'>
+
+  <h1>HappyTracker</h1>
+
+  <div>
+    How's today going?
+
+    <form name="dayForm" ng-controller='dayReview' ng-submit="addReview()">
+      <!--  Live Preview -->
+      <blockquote >
+        <strong>Stars - </strong> {{dayReview.stars}}  <br>
+        <strong>Short Review - </strong>{{dayReview.body}} <br>
+        <strong>Overall Mood - </strong>{{ dayReview.mood }}
+      </blockquote>
+      <!--  Review Form -->
+      <h4>Submit a DayReview</h4>
+      <fieldset class="form-group">
+        <select ng-model="dayReview.stars" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
+          <option value>Rate the Day</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <textarea ng-model="dayReview.body" class="form-control" placeholder="Short day review.." title="Review"></textarea>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <input ng-model="dayReview.mood" type="text" class="form-control" placeholder="Happy? Sad? ??" title="Mood" />
+      </fieldset>
+
+      <fieldset class="form-group">
+        <input type="submit" class="btn btn-primary pull-right" value="Submit DayReview" />
+      </fieldset>
+    </form>
+  </div>
+
+
+  <div>
+    <h4>Mood for days past</h4>
+    <ul>
+      <li ng-repeat='day in days'>Mood: {{ day.mood }}  - {{ day.body }} - {{ day.stars }}</li>
+    </ul>    
+  </div>
+
+</body>
+</html>
