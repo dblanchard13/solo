@@ -1,7 +1,7 @@
 
 angular.module('happyDay', ['firebase'])
 
-  .controller('DayController', function($scope, $firebaseArray){
+  .controller('DayController', function($scope, $firebaseArray, $rootScope){
     var dayReview = this
     var fire = new Firebase('https://hackacracka.firebaseio.com/reviews');
     dayReview.reviews = $firebaseArray(fire);
@@ -10,7 +10,8 @@ angular.module('happyDay', ['firebase'])
       console.log('Hello, world')
       dayReview.reviews.$add({
         text: dayReview.newDayReview.summary,
-        stars: dayReview.newDayReview.stars
+        stars: dayReview.newDayReview.stars,
+        user: $rootScope.authData.uid
       });
       dayReview.newDayReview = '';
     };
@@ -34,18 +35,14 @@ angular.module('happyDay', ['firebase'])
     }
   })
 
-  .controller('ReviewController', function($scope, $firebaseArray){
-
-  })
+ 
 
   .controller('UserController', function($scope, $firebaseAuth, $rootScope){
     var user = this;
-
-
     var ref = new Firebase("https://hackacracka.firebaseio.com/");
 
-    $scope.loggedIn = false;
-
+    $rootScope.authData;
+    // Adds a new user, if user already exists, logs in
     user.addUser = function(email, password){
       console.log('email - ', email)
       console.log('password - ', password)
@@ -55,15 +52,18 @@ angular.module('happyDay', ['firebase'])
       }, function(error, userData) {
         if (error) {
           console.log("Error creating user:", error);
+          if(error.code === 'EMAIL_TAKEN'){
+            user.signIn(email, password)
+          }
         } else {
           console.log("Successfully created user account with uid:", userData.uid);
         }
       });      
     };
 
-
     user.checkUser = function(){
       var authData = ref.getAuth();
+      $rootScope.authData = authData;
       if (authData) {
         console.log("User " + authData.uid + " is logged in with " + authData.provider);
         return true;
@@ -74,21 +74,6 @@ angular.module('happyDay', ['firebase'])
     };
     user.checkUser();
 
-    user.authUser = function(email, password){
-      if(user.checkUser()){
-        console.log('Already signed in!')
-        return;
-      }
-      if(user.signIn(email, password)){
-        console.log('signed in!');
-        return;
-      }
-      else{
-        user.adduser(email, password);
-      }
-      
-    };
-
     user.signIn = function(email, password){
       ref.authWithPassword({
         email    : email.toString(),
@@ -96,11 +81,9 @@ angular.module('happyDay', ['firebase'])
       }, function(error, authData) {
         if (error) {
           console.log("Login Failed!", error);
-          $rootScope.loggedIn = false;
           return false;
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          $rootScope.loggedIn = true;
           return true;
         }
       })   
