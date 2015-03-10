@@ -4,9 +4,35 @@
   </head>
 <body ng-app='happyDay' ng-controller='DayController as dayCtrl'>
 
+
 <h1>HappyDays Tracker</h1>
 
-<div >
+<h3>Signin/Signup</h3>
+<div ng-controller="UserController as UCtrl">
+<h4 ng-if="loggedIn === true">Login test</h4>
+  <form ng-submit="UCtrl.addUser(UCtrl.email, UCtrl.password); UCtrl.email=''; UCtrl.password='';">
+    <input type="email" placeholder="email" ng-model="UCtrl.email"><br><br>
+    <input type="password" placeholder="password" ng-model="UCtrl.password"><br><br>
+    <input type="submit" value="Signup!">
+  </form>
+
+  <form ng-submit="UCtrl.signIn(UCtrl.email, UCtrl.password)">
+    <input type="email" placeholder="email" ng-model="UCtrl.email"><br><br>
+    <input type="password" placeholder="password" ng-model="UCtrl.password"><br><br>
+    <input type="submit" value="Signin!">
+  </form>
+
+  <div>
+  <h1>Check User</h1>
+    <button ng-click="UCtrl.checkUser()">Click Me!</button>
+    <button ng-click="UCtrl.logOut()">Logout!</button>
+
+  </div>
+</div>
+
+<br><br>
+
+<div ng-show="">
   <form class='submitDReview' name='submitDReview' ng-submit="dayCtrl.addReview()">
     <select ng-model="dayCtrl.newDayReview.stars" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
           <option value>Rate your Day</option>
@@ -29,6 +55,8 @@
     <li ng-repeat="review in dayCtrl.reviews">{{review.stars}} Stars -  {{review.text}}</li>
   </ul>
 </div>
+
+
 
 <div class="DayAverage">
 <h1>HappyDays Star Average - {{dayCtrl.avg}}</h1>

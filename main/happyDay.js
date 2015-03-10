@@ -11,50 +11,90 @@ angular.module('happyDay', ['firebase'])
       dayReview.reviews.$add({
         text: dayReview.newDayReview.summary,
         stars: dayReview.newDayReview.stars
-      }) ;
+      });
       dayReview.newDayReview = '';
     };
 
     dayReview.starAvg = function(){
-      console.log('reviews - ', dayReview.reviews)
       var counter = 0;
       var starScore = 0;
       dayReview.reviews.forEach(function(star){
-        console.log('Star - ', star.stars)
         starScore += star.stars;
         counter ++;
       })
       dayReview.avg = starScore / counter;
-      console.log('hmmm - ',dayReview.avg)
       counter = 0;
       starScore = 0;
     };
+
+    dayReview.commentReview = function(){
+      dayReview.reviews.$add({
+        comment: dayReview.newDayReview.comment
+      });
+    }
   })
-  
+
+  .controller('ReviewController', function($scope, $firebaseArray){
+
+  })
+
   .controller('UserController', function($scope, $firebaseAuth){
+    var user = this;
 
-    var ref = new Firebase("https://hackacracka.firebaseio.com/users");
-    ref.createUser({
-      email    : "bobtony@firebase.com",
-      password : "correcthorsebatterystaple"
-    }, function(error, userData) {
-      if (error) {
-        console.log("Error creating user:", error);
-      } else {
-        console.log("Successfully created user account with uid:", userData.uid);
-      }
-    });
 
-    ref.authWithPassword({
-      email    : "bobtony@firebase.com",
-      password : "correcthorsebatterystaple"
-    }, function(error, authData) {
-      if (error) {
-        console.log("Login Failed!", error);
+    var ref = new Firebase("https://hackacracka.firebaseio.com/");
+
+    $scope.loggedIn = ref.getAuth();
+
+    user.addUser = function(email, password){
+      console.log('email - ', email)
+      console.log('password - ', password)
+      ref.createUser({
+        email    : email.toString(),
+        password : password.toString()
+      }, function(error, userData) {
+        if (error) {
+          console.log("Error creating user:", error);
+        } else {
+          console.log("Successfully created user account with uid:", userData.uid);
+        }
+      });      
+    };
+
+    user.signIn = function(email, password){
+      ref.authWithPassword({
+        email    : email.toString(),
+        password : password.toString()
+      }, function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+        }
+      });    
+    };
+
+    user.checkUser = function(){
+      var authData = ref.getAuth();
+      if (authData) {
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+        $scope.loggedIn = true;
       } else {
-        console.log("Authenticated successfully with payload:", authData);
-      }
-    });
+        $scope.loggedIn = false;
+        console.log("User is logged out");
+      }      
+    };
+
+    user.logOut = function(){
+      var authData = ref.unauth();
+      if (authData) {
+        $scope.loggedIn = true;
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+      } else {
+        $scope.loggedIn = false;
+        console.log("User is logged out");
+      }      
+    };
 
   })
 

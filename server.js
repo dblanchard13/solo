@@ -9,13 +9,14 @@ app.set('port', (process.env.PORT || 6900));
 
 app.use(express.static(__dirname + '/main'));
 
-app.get('/', function(request, response) {
-  response.send('Hello World!');
-});
+// app.get('/', function(request, response) {
+//   console.log('getting sumpin')
+//   response.send('Hello World!');
+// });
 
-app.post('/', function(request, response) {
-  response.send('Hello there!');
-});
+// app.post('/', function(request, response) {
+//   response.send('Hello there!');
+// });
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
