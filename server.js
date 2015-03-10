@@ -1,7 +1,11 @@
 var express = require('express');
+var env = require('./env.json')
 var app = express();
 
+// var port = eval(env[process.env.NODE_ENV]['PORT']);
+
 app.set('port', (process.env.PORT || 6900));
+// app.set('port', eval(env[process.env.NODE_ENV]['PORT']));
 
 app.use(express.static(__dirname + '/main'));
 
@@ -10,8 +14,6 @@ app.get('/', function(request, response) {
 });
 
 app.post('/', function(request, response) {
-  // turn posted data into JSON and send on to Firebase
-  console.log(request);
   response.send('Hello there!');
 });
 
