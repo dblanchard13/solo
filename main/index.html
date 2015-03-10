@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Solo MVP</title>
+  </head>
+<body ng-app='happyDay' ng-controller='DayController as dayCtrl'>
+
+<h1>HappyTracker</h1>
+
+<div >
+  <form class='submitDReview' name='submitDReview' ng-submit="dayCtrl.addReview()">
+    <textarea ng-model="dayCtrl.newDayReview" placeholder="Tell me about your HappyDay!"></textarea>
+    <input type="submit">
+  </form>
+</div>
+
+<h1>Current Review</h1>
+<div ng-hide="dayCtrl.newDayReview.length === 0">
+  {{dayCtrl.newDayReview | json}}
+</div>
+
+<h1>HappyDays Reviews</h1>
+  
+<div>
+  <ul>
+    <li ng-repeat="review in dayCtrl.reviews">{{review.text | json}}</li>
+  </ul>
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.2.2/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
+
+  <script src='happyDay.js'></script>
+
+</body>
+</html>
