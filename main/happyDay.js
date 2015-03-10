@@ -38,13 +38,13 @@ angular.module('happyDay', ['firebase'])
 
   })
 
-  .controller('UserController', function($scope, $firebaseAuth){
+  .controller('UserController', function($scope, $firebaseAuth, $rootScope){
     var user = this;
 
 
     var ref = new Firebase("https://hackacracka.firebaseio.com/");
 
-    $scope.loggedIn = ref.getAuth();
+    $scope.loggedIn = false;
 
     user.addUser = function(email, password){
       console.log('email - ', email)
@@ -61,6 +61,34 @@ angular.module('happyDay', ['firebase'])
       });      
     };
 
+
+    user.checkUser = function(){
+      var authData = ref.getAuth();
+      if (authData) {
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+        return true;
+      } else {
+        console.log("User is logged out");
+        return false;
+      }      
+    };
+    user.checkUser();
+
+    user.authUser = function(email, password){
+      if(user.checkUser()){
+        console.log('Already signed in!')
+        return;
+      }
+      if(user.signIn(email, password)){
+        console.log('signed in!');
+        return;
+      }
+      else{
+        user.adduser(email, password);
+      }
+      
+    };
+
     user.signIn = function(email, password){
       ref.authWithPassword({
         email    : email.toString(),
@@ -68,74 +96,27 @@ angular.module('happyDay', ['firebase'])
       }, function(error, authData) {
         if (error) {
           console.log("Login Failed!", error);
+          $rootScope.loggedIn = false;
+          return false;
         } else {
           console.log("Authenticated successfully with payload:", authData);
+          $rootScope.loggedIn = true;
+          return true;
         }
-      });    
-    };
-
-    user.checkUser = function(){
-      var authData = ref.getAuth();
-      if (authData) {
-        console.log("User " + authData.uid + " is logged in with " + authData.provider);
-        $scope.loggedIn = true;
-      } else {
-        $scope.loggedIn = false;
-        console.log("User is logged out");
-      }      
+      })   
     };
 
     user.logOut = function(){
       var authData = ref.unauth();
       if (authData) {
-        $scope.loggedIn = true;
+        user.checkUser();
         console.log("User " + authData.uid + " is logged in with " + authData.provider);
       } else {
-        $scope.loggedIn = false;
+        user.checkUser();
         console.log("User is logged out");
       }      
     };
 
   })
 
- //  .controller('AuthCtrl', [
- //   '$scope', '$rootScope', '$firebaseAuth', function($scope, $rootScope, $firebaseAuth) {
- //     var ref = new Firebase('https://angularfireauth.firebaseio.com/');
- //     $rootScope.auth = $firebaseAuth(ref);
-     
- //     $scope.signIn = function () {
- //       $rootScope.auth.$login('password', {
- //         email: $scope.email,
- //         password: $scope.password
- //       }).then(function(user) {
- //         $rootScope.alert.message = '';
- //       }, function(error) {
- //         if (error = 'INVALID_EMAIL') {
- //           console.log('email invalid or not signed up — trying to sign you up!');
- //           $scope.signUp();
- //         } else if (error = 'INVALID_PASSWORD') {
- //           console.log('wrong password!');
- //         } else {
- //           console.log(error);
- //         }
- //       });
- //     }
-
- //     $scope.signUp = function() {
- //       $rootScope.auth.$createUser($scope.email, $scope.password, function(error, user) {
- //         if (!error) {
- //           $rootScope.alert.message = '';
- //         } else {
- //           $rootScope.alert.class = 'danger';
- //           $rootScope.alert.message = 'The username and password combination you entered is invalid.';
- //         }
- //       });
- //     }
- //   }
- // ])
-
- //  .controller('AlertCtrl', [
- //   '$scope', '$rootScope', function($scope, $rootScope) {
- //     $rootScope.alert = {};
- //   }
- // ]);
+ 
